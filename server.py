@@ -2,6 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
 from mimetypes import types_map
 import os
+import json
 
 class MyServer(BaseHTTPRequestHandler):
 
@@ -45,10 +46,27 @@ class MyServer(BaseHTTPRequestHandler):
         return
 
     def serve_data(self):
-        print('Serving data')
-        query = urlparse(self.path).query
-        params = {x[0]: x[1] for x in [x.split("=") for x in query.split("&")]}
-        print('PARAMS: {}'.format(params))
+        # Can't figure out extracting parameters from the request. Using a static
+        # object to test JSON conversion.
+        response = {
+            "text": "This is the server speaking",
+            "param1": 10,
+            "param2": "This is static data"
+        }
+        response_json = json.dumps(response)
+
+        # print('Serving data')
+        # print('PATH: {}'.format(self.path))
+        # query = urlparse(self.path).query
+        # print('QUERY: {}'.format(query))
+        # params = {x[0]: x[1] for x in [x.split("=") for x in query.split("&")]}
+        # print('PARAMS: {}'.format(params))
+        # params_json = json.dumps(params)
+        self.send_response(200)
+        self.send_header('Content-Type', 'application/json')
+        self.end_headers()
+        # self.wfile.write(bytes(params_json, 'utf-8'))
+        self.wfile.write(bytes(response_json, 'utf-8'))
         return
 
 if __name__ == '__main__':
