@@ -1,5 +1,7 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse
+from mimetypes import types_map
+import os
 
 class MyServer(BaseHTTPRequestHandler):
 
@@ -10,17 +12,36 @@ class MyServer(BaseHTTPRequestHandler):
         # If the route is "/", serve the main page and related resources. If the
         # route is "/data/", run the db query and return the results
         if parsed_url.path == "/":
+            self.path = "/index.html"
             self.serve_page()
         elif parsed_url.path == "/data":
             self.serve_data()
+        else:
+            self.serve_page()
 
 
     def do_POST(self):
         print('POST request received to {}'.format(self.path))
         # TODO: Return some kind of 500 code
 
-    def serve_page(self, parsed_url.query):
+    def serve_page(self):
+        """Respond to a request to '/'"""
+
         print('Serving page')
+        # Parse content type of request
+        filename, extension = os.path.splitext(self.path)
+        mimetype = types_map[extension]
+        try:
+            f = open(os.curdir + os.sep + self.path)
+            self.send_response(200)
+            self.send_header('Content-Type', mimetype)
+            self.end_headers()
+            self.wfile.write(bytes(f.read(), 'utf-8'))
+        except FileNotFoundError:
+            self.send_response(404)
+            self.end_headers()
+            self.wfile.write(bytes('No dice, son', 'utf-8'))
+
         return
 
     def serve_data(self):
