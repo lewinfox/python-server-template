@@ -2,7 +2,6 @@
 #!/usr/bin/env python3
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
-from urllib.parse import urlparse
 from mimetypes import types_map
 import os
 import json
@@ -12,17 +11,18 @@ class MyServer(BaseHTTPRequestHandler):
     def do_GET(self):
 
         print('GET request received to {} from {}'.format(self.path, self.client_address))
-        parsed_url = urlparse(self.path)
-        print('PARSED_URL: {}'.format(parsed_url))
-        # If the route is "/", serve the main page and related resources. If the
-        # route is "/data/", run the db query and return the results
-        if parsed_url.path == "/":
+
+        if self.path == "/":
             self.path = "/index.html"
 
-        print('Serving page {}'.format(self.path))
+        print('Serving {}'.format(self.path))
+
         # Parse content type of request
         filename, extension = os.path.splitext(self.path)
         mimetype = types_map.get(extension)
+        print('Detected mimetype: {}'.format(mimetype))
+
+        # Open and send file
         try:
             f = open(os.curdir + os.sep + self.path)
             self.send_response(200)
@@ -39,8 +39,9 @@ class MyServer(BaseHTTPRequestHandler):
         print('POST request received to {}'.format(self.path))
         print('PATH: {}'.format(self.path))
 
-        print(self.headers)
+        # Extract the POSTed data
         content_len = int(self.headers.get('Content-Length'))
+        # Reads data and converts JSON to dict
         payload = json.loads(str(self.rfile.read(content_len), 'utf-8'))
         print('Payload:')
         print(payload)
@@ -49,10 +50,12 @@ class MyServer(BaseHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
-        # Send content
+        # Build the content
+        content  = json.dumps(payload).encode(encoding='utf_8')
+
+        # Send the response
         try:
             content  = json.dumps(payload).encode(encoding='utf_8')
-            print(type(content))
             self.wfile.write(content)
         except Exception as e:
             print('Exception: {}'.format(e))
