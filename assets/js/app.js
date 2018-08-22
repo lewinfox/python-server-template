@@ -45,12 +45,14 @@ window.addEventListener("load", () => {
     const processData = (data) => {
         console.log(data);
         let responseContainer = document.getElementById("response-container");
-        let innerHTML = '';
+        let outputHTML = "<table><tr><th>Parameter</th><th>Value</th></tr>";
 
         for (let x in data) {
-            innerHTML += `<p>Parameter "${x}" has a value of "${data[x]}"</p>`
+            outputHTML += `<tr><td>${x}</td><td>${data[x]}</td></tr>`
         }
 
-        responseContainer.innerHTML = innerHTML;
+        outputHTML += "</table>";
+
+        responseContainer.innerHTML = outputHTML;
     }
 })
