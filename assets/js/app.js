@@ -2,7 +2,7 @@ console.log('app.js connected successfully');
 
 window.addEventListener("load", () => {
 
-    function sendData(form) {
+    const sendData = (form) => {
         let xhr = new XMLHttpRequest();
 
         // Collect form data
@@ -19,7 +19,7 @@ window.addEventListener("load", () => {
         // CASE: successful data submission
         xhr.addEventListener("load", e => {
             let responseObject = JSON.parse(e.target.responseText);
-            console.log(responseObject);
+            processData(responseObject);
         })
 
         // CASE: failure
@@ -35,10 +35,15 @@ window.addEventListener("load", () => {
     }
 
     // Define form
-    let form = document.getElementById("input-form");
+    const form = document.getElementById("input-form");
     // Add event listener to override default behaviour and send request
     form.addEventListener("submit", e => {
         e.preventDefault();
         sendData(form);
     })
+
+    const processData = (data) => {
+        console.log('This is the processData function');
+        console.log(data);
+    }
 })
