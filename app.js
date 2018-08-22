@@ -8,9 +8,16 @@ window.addEventListener("load", () => {
         // Collect form data
         let fd = new FormData(form);
 
+        // Convert to JS object
+        let fd_obj = {};
+        fd.forEach((value, key) => {
+            fd_obj[key] = value;
+        });
+        let fd_json = JSON.stringify(fd_obj);
+
+
         // CASE: successful data submission
         xhr.addEventListener("load", e => {
-            alert("Success! Check the console for the data");
             let responseObject = JSON.parse(e.target.responseText);
             console.log(responseObject);
         })
@@ -21,10 +28,10 @@ window.addEventListener("load", () => {
         })
 
         // Build the request
-        xhr.open("GET", "/data");
+        xhr.open("POST", "/");
 
         // Send the request
-        xhr.send(fd);
+        xhr.send(fd_json);
     }
 
     // Define form
