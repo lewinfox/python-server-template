@@ -43,7 +43,14 @@ window.addEventListener("load", () => {
     })
 
     const processData = (data) => {
-        console.log('This is the processData function');
         console.log(data);
+        let responseContainer = document.getElementById("response-container");
+        let innerHTML = '';
+
+        for (let x in data) {
+            innerHTML += `<p>Parameter "${x}" has a value of "${data[x]}"</p>`
+        }
+
+        responseContainer.innerHTML = innerHTML;
     }
 })
