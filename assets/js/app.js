@@ -1,6 +1,6 @@
 console.log('app.js connected successfully');
 
-window.addEventListener("load", () => {
+window.addEventListener('load', () => {
 
     const sendData = (form) => {
         let xhr = new XMLHttpRequest();
@@ -17,41 +17,41 @@ window.addEventListener("load", () => {
 
 
         // CASE: successful data submission
-        xhr.addEventListener("load", e => {
+        xhr.addEventListener('load', e => {
             let responseObject = JSON.parse(e.target.responseText);
             processData(responseObject);
         })
 
         // CASE: failure
-        xhr.addEventListener("error", e => {
-            alert("Bugger, something went wrong");
+        xhr.addEventListener('error', e => {
+            alert('Bugger, something went wrong');
         })
 
         // Build the request
-        xhr.open("POST", "/");
+        xhr.open('POST', '/');
 
         // Send the request
         xhr.send(fd_json);
     }
 
     // Define form
-    const form = document.getElementById("input-form");
+    const form = document.getElementById('input-form');
     // Add event listener to override default behaviour and send request
-    form.addEventListener("submit", e => {
+    form.addEventListener('submit', e => {
         e.preventDefault();
         sendData(form);
     })
 
     const processData = (data) => {
         console.log(data);
-        let responseContainer = document.getElementById("response-container");
-        let outputHTML = "<table><tr><th>Parameter</th><th>Value</th></tr>";
+        let responseContainer = document.getElementById('response-container');
+        let outputHTML = '<table class="table"><tr><th>Parameter</th><th>Value</th></tr>';
 
         for (let x in data) {
             outputHTML += `<tr><td>${x}</td><td>${data[x]}</td></tr>`
         }
 
-        outputHTML += "</table>";
+        outputHTML += '</table>';
 
         responseContainer.innerHTML = outputHTML;
     }
