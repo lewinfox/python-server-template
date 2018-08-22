@@ -37,21 +37,18 @@ class MyServer(BaseHTTPRequestHandler):
 
     def do_POST(self):
         print('POST request received to {}'.format(self.path))
-        print('PATH: {}'.format(self.path))
 
         # Extract the POSTed data
         content_len = int(self.headers.get('Content-Length'))
-        # Reads data and converts JSON to dict
         payload = json.loads(str(self.rfile.read(content_len), 'utf-8'))
-        print('Payload:')
-        print(payload)
+        print('Payload: {}'.format(payload))
+
+        # Build the content
+        content  = json.dumps(payload).encode(encoding='utf_8')
 
         # Send headers
         self.send_response(200)
         self.end_headers()
-
-        # Build the content
-        content  = json.dumps(payload).encode(encoding='utf_8')
 
         # Send the response
         try:
@@ -59,6 +56,7 @@ class MyServer(BaseHTTPRequestHandler):
             self.wfile.write(content)
         except Exception as e:
             print('Exception: {}'.format(e))
+
 
 if __name__ == '__main__':
     print('Running server.py')
