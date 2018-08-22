@@ -9,30 +9,44 @@
     <body>
         <div class="container" id="header">
             <h1>Python server test</h1>
-            <p>Testing passing data from a HTML form to a Python server and back
-            again.</p>
-            <p>Sounds fun, doesn't it!</p>
+            <p>Passing data from a HTML form to a Python server and back.</p>
+            <p>Run <code>server.py</code>, then enter data in the form below.
+            The entered parameters will be shown in a table and in the JS console.</p>
         </div>
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <form id="input-form" class="form">
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Name</label>
                             </div>
                             <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
                         </div>
+
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Age</label>
                             </div>
                             <input type="number" class="form-control" name="age" value="0">
                         </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Date of birth</label>
+                            </div>
+                            <input type="date" class="form-control" name="dob">
+                        </div>
+
                         <button type="submit" class="btn btn-primary btn-lg btn-block">Go</button>
                     </form>
                 </div>
             </div>
+        </div>
+
+        <div class="container">
+            <hr>
         </div>
 
         <div class="container">
